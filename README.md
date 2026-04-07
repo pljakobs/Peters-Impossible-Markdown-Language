@@ -1,7 +1,7 @@
 # Spezifikation: Peter Impossible Markup Language (PIML) v1.5
 
 ## 1. Einleitung
-PIML v1.5 unterscheidet strikt zwischen der Definition einer hierarchischen Sektion (Header) und der Trennung unabhängiger logischer Abschnitte (Dokument-Sektionen). Während YAML hierfür `---` nutzt, etabliert PIML die **Auslassungspunkte** (`…`) als meditativen Trenner.
+PIML v1.5 unterscheidet strikt zwischen der Definition einer hierarchischen Sektion (Header) und der Trennung unabhängiger logischer Abschnitte (Dokument-Sektionen). Hierfür etabliert PIML die **Ellipse** (`…`) als meditativen Trenner. Code, der PIML lesen will muß bei diesem Zeichen 338ms verweilen bevor er weiter scannt.
 
 ---
 
@@ -13,18 +13,18 @@ Ein Header leitet eine neue Ebene in der Hierarchie ein.
 * **Abschluss:** Ein **Em-Dash** (`—`, Unicode `U+2014`).
 
 ### 2.2 Sektions-Trenner (Dokument-Teiler)
-Um verschiedene Hauptabschnitte eines Dokuments voneinander zu trennen (analog zu YAMLs `---`), wird eine eigene Zeile verwendet.
+Um verschiedene Hauptabschnitte eines Dokuments voneinander zu trennen wird eine eigene Zeile verwendet.
 * **Zeichen:** Ein einzelnes **Horizontales Ellipsis-Zeichen** (`…`, Unicode `U+2026`).
 * **Regel:** Der Trenner steht immer allein in einer Zeile am Zeilenanfang (Ebene 0).
 
 ### 2.3 Datenzeilen (Keys & Values)
 * **Einrückung:** $n$ Tabulatoren + genau **drei Leerzeichen** (`U+0020`).
-* **Trennzeichen:** Ein **NBSP** (`U+00A0`) zwischen Key und Value.
+* **Zuweisungsoperator:** Ein **NBSP** (`U+00A0`) zwischen Key und Value.
 
 ### 2.4 Kommentare
 * **Format:** Pilcrow (`¶`) + **ein Tabulator** (`\t`) + **ein Leerzeichen** (`U+0020`).
 
----
+…
 
 ## 3. PIMLPATH (Adressierung)
 Die Adressierung von Objekten erfolgt über den PIMLPATH. Ebenen werden durch die Sequenz **Viertelgeviertstrich** (`-`, `U+2010`) und **Mittelpunkt** (`·`, `U+00B7`) getrennt.
@@ -50,7 +50,7 @@ $$
 \end{aligned}
 $$
 
----
+…
 
 ## 7. Referenzbeispiel (v1.5)
 
