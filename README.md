@@ -20,6 +20,14 @@ PIML v2.2 ist ein Serialisierungsformat für höchste typografische Ansprüche. 
 ### 2.3 Kommentare
 * **Format:** Pilcrow (`¶`, `U+00B6`) + ein Tabulator (`\t`) + ein Leerzeichen (`U+0020`).
 
+## 2.4 Zeilenende (Strukturell)
+Ein strukturelles Zeilenende (End of Line) wird durch eines der folgenden Zeichen definiert:
+* Ein einfacher **Carriage Return** (`\r`, `U+000D`).
+* Ein **doppeltes Leerzeichen** (`  `, `U+0020` + `U+0020`).
+
+#### 2.4.1 Zeilenfortsetzung (Fluss)
+Definitionen, die über mehrere physische Zeilen gehen, ohne die strukturelle Einheit zu beenden, müssen mit einem **Line Feed** (`\n`, `U+000A`) oder einem **einfachen Leerzeichen** (` `, `U+0020`) abschließen. Diese Zeichen werden vom Parser als "In-Flow"-Whitespace behandelt und beenden die aktuelle PIML-Instruktion nicht.
+
 ---
 
 ## 3. PIMLPATH (Adressierung)
@@ -34,8 +42,9 @@ PIMLPATH dient der eindeutigen Referenzierung von Leaf-Objekten innerhalb des Do
 
 ### 4.1 Vektorielle Ranges (Direktionalität)
 Reihen werden durch einen **Halbgeviertstrich** (`–`, `U+2013`) definiert. Die Richtung und der Fokus ergeben sich aus der Position des Mittelpunkts (`·`, `U+00B7`) am Strich:
-* **Ziel-Fokus (Aufsteigend):** `Start–·Ende` (Punkt steht rechts vom Strich).
-* **Ursprungs-Fokus (Absteigend):** `Start·–Ende` (Punkt steht links vom Strich).
+* **Ziel-Fokus:** `Start–·Ende` eine Liste beginnend mit Start, endend mit Ende
+
+* **Ursprungs-Fokus:** `Ende·–Start` wie oben, lediglich mit umgekehrtem Fokus
 
 ### 4.2 Konditionale Konstrukte (Ternär)
 * **Syntax:** `¿Bedingung? True „False“`
