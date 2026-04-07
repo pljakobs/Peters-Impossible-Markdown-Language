@@ -1,6 +1,3 @@
-Hier ist die vollständig konsolidierte und finale Spezifikation der Peter Impossible Markup Language (PIML) v1.9. Dieser Sourcecode enthält alle von dir definierten Regeln, inklusive der 338ms-Pause, der vektoriellen Range-Logik und der korrekten LaTeX-Syntax für den BNF-Teil.
-Markdown
-
 # Spezifikation: Peter Impossible Markup Language (PIML) v1.9
 
 ## 1. Einleitung
@@ -40,7 +37,7 @@ Die Adressierung von Objekten erfolgt über den PIMLPATH. Ebenen werden durch di
 ### 3.2 Vektorielle Range-Definitionen (Intervalle)
 Reihen werden durch einen **Halbgeviertstrich** (`–`, `U+2013`) definiert. Die Zielrichtung wird durch einen **Mittelpunkt** (`·`, `U+00B7`) markiert, der zwingend unmittelbar nach dem Halbgeviertstrich auf der Seite des Endwerts stehen muss.
 * **Syntax:** `Start–·Ende`
-* **Beispiele:** `1–·7` (Aufsteigend), `Z–·A` (Absteigend).
+* **Beispiele:** `1–·7` (Aufsteigend), `A·–Z` (Absteigend).
 
 ### 3.3 Konditionale Konstrukte (Ternär)
 PIML nutzt eine logische Struktur basierend auf spanischer Interpunktion:
