@@ -42,9 +42,9 @@ In der folgenden Darstellung sind die unsichtbaren Zeichen zur Verdeutlichung ma
 
 ```text
 Projekt-Alpha—
-___Status·Aktiv
-\tMeilensteine—
-\t___Phase_1·Abgeschlossen
-\t___Phase_2·Laufend
-\t\tDetails—
-\t\t___Budget·Überschritten
+   Status Aktiv
+	Meilensteine—
+	   Phase_1 Abgeschlossen
+	   Phase_2 Laufend
+		Details—
+		   Budget Überschritten
