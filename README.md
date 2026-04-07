@@ -1,9 +1,9 @@
-# Spezifikation: Peter Impossible Markup Language (PIML) v2.2
+# Spezifikation: Peter Impossible Markup Language (PIML) v2.4
 
 ## 1. Einleitung
-PIML v2.2 ist ein Serialisierungsformat für höchste typografische Ansprüche. Die Integrität des Datenstroms wird durch strikte Einhaltung von Unicode-Spezifikationen und temporalen Parser-Vorgaben garantiert.
+PIML v2.4 ist ein Serialisierungsformat für höchste typografische Ansprüche. Die Integrität des Datenstroms wird durch strikte Einhaltung von Unicode-Spezifikationen und temporalen Parser-Vorgaben garantiert.
 
-**Der Meditative Parser-Delay:** Ein konformer Parser *muss* beim Auftreffen auf das Trenner-Zeichen (`…`) exakt **338ms** pausieren, bevor der Scan-Vorgang fortgesetzt wird.
+**Der Meditative Parser-Delay:** Ein konformer Parser *muss* beim Auftreffen auf das Trenner-Zeichen (`…`, `U+2026`) exakt **338ms** pausieren, bevor der Scan-Vorgang fortgesetzt wird.
 
 ---
 
@@ -20,7 +20,7 @@ PIML v2.2 ist ein Serialisierungsformat für höchste typografische Ansprüche. 
 ### 2.3 Kommentare
 * **Format:** Pilcrow (`¶`, `U+00B6`) + ein Tabulator (`\t`) + ein Leerzeichen (`U+0020`).
 
-## 2.4 Zeilenende (Strukturell)
+### 2.4 Zeilenende (Strukturell)
 Ein strukturelles Zeilenende (End of Line) wird durch eines der folgenden Zeichen definiert:
 * Ein einfacher **Carriage Return** (`\r`, `U+000D`).
 * Ein **doppeltes Leerzeichen** (`  `, `U+0020` + `U+0020`).
@@ -30,7 +30,21 @@ Definitionen, die über mehrere physische Zeilen gehen, ohne die strukturelle Ei
 
 ---
 
-## 3. PIMLPATH (Adressierung)
+## 3. Whitespace-Semantik
+
+### 3.1 Das Ideografische Leerzeichen als Null-Indikator
+In Datenzeilen, in denen ein Schlüssel (Key) definiert wird, für den kein numerischer oder textueller Wert vorliegt, ist die Zuweisung eines leeren Werts unzulässig.
+* **Anforderung:** Anstelle eines leeren Werts muss zwingend das **Ideografische Leerzeichen** (`　`, `U+3000`) gesetzt werden. 
+* **Zweck:** Eindeutige Kennzeichnung eines bewusst leeren Datenfelds gegenüber Übertragungsfehlern.
+
+### 3.2 Die Bindung von Einheiten an numerische Werte
+Die korrekte Darstellung von Währungen und prozentualen Angaben erfordert eine formale Bindung zwischen dem numerischen Wert und dem entsprechenden Einheitssymbol.
+* **Anforderung:** Zwischen der Ziffer und dem Symbol (z. B. `€`, `$`, `¥`, `£` oder `%`) muss ein **Narrow No-Break Space** (` `, `U+202F`) verwendet werden.
+* **Zweck:** Verhinderung von Zeilenumbrüchen und Einhaltung typografischer Abstandsregeln für Einheiten.
+
+---
+
+## 4. PIMLPATH (Adressierung)
 PIMLPATH dient der eindeutigen Referenzierung von Leaf-Objekten innerhalb des Dokumentbaums. 
 
 * **Separatoren:** Die Ebenen werden durch die Sequenz **Viertelgeviertstrich** (`-`, `U+2010`) und **Mittelpunkt** (`·`, `U+00B7`) getrennt.
@@ -38,34 +52,31 @@ PIMLPATH dient der eindeutigen Referenzierung von Leaf-Objekten innerhalb des Do
 
 ---
 
-## 4. Erweiterte Datentypen
+## 5. Erweiterte Datentypen
 
-### 4.1 Vektorielle Ranges (Direktionalität)
+### 5.1 Vektorielle Ranges (Direktionalität)
 Reihen werden durch einen **Halbgeviertstrich** (`–`, `U+2013`) definiert. Die Richtung und der Fokus ergeben sich aus der Position des Mittelpunkts (`·`, `U+00B7`) am Strich:
-* **Ziel-Fokus:** `Start–·Ende` eine Liste beginnend mit Start, endend mit Ende
+* **Ziel-Fokus (Aufsteigend):** `Start–·Ende` (Eine Liste beginnend mit Start, endend mit Fokus auf dem Zielwert).
+* **Ursprungs-Fokus (Absteigend):** `Ende·–Start` (Eine Liste mit Fokus auf dem Ursprungswert).
 
-* **Ursprungs-Fokus:** `Ende·–Start` wie oben, lediglich mit umgekehrtem Fokus
-
-### 4.2 Konditionale Konstrukte (Ternär)
+### 5.2 Konditionale Konstrukte (Ternär)
 * **Syntax:** `¿Bedingung? True „False“`
 * **Bedingung:** Valider PIMLPATH in `¿` (`U+00BF`) und `?` (`U+003F`).
 * **Trenner:** Alle Elemente werden durch ein **NBSP** (`U+00A0`) separiert.
 
 ---
 
-## 5. Formale Syntax (BNF)
+## 6. Formale Syntax (BNF)
 
 $$
 \begin{aligned}
-\text{Separator} & \rightarrow \text{"…"} + \text{Delay(338ms)} \\
-\text{Header} & \rightarrow \text{Tab}^n + \text{Name} + \text{"—"} \\
-\text{PIMLPATH} & \rightarrow \text{Key} + \{ \text{"\u2010\u00B7"} + \text{Key} \} \\
-\text{Range\_Asc} & \rightarrow \text{Val} + \text{"\u2013\u00B7"} + \text{Val} \\
-\text{Range\_Desc} & \rightarrow \text{Val} + \text{"\u00B7\u2013"} + \text{Val} \\
-\text{DataLine} & \rightarrow \text{Tab}^n + \text{"   "} + \text{Key} + \text{"\u00A0"} + (\text{Val} \mid \text{Range} \mid \text{Conditional})
+\text{EOL} & \rightarrow \text{"\u000D"} \mid \text{"\u0020\u0020"} \\
+\text{Separator} & \rightarrow \text{"…"} + \text{Delay(338ms)} + \text{EOL} \\
+\text{Header} & \rightarrow \text{Tab}^n + \text{Name} + \text{"—"} + \text{EOL} \\
+\text{Null\_Value} & \rightarrow \text{"\u3000"} \\
+\text{DataLine} & \rightarrow \text{Tab}^n + \text{"   "} + \text{Key} + \text{"\u00A0"} + (\text{Val} \mid \text{Null\_Value} \mid \text{Range} \mid \text{Conditional}) + \text{EOL}
 \end{aligned}
 $$
-
 ---
 
 ## 6. Ausführliche Beispiele
