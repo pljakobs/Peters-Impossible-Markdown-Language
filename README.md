@@ -1,7 +1,7 @@
-# Spezifikation: Peter Impossible Markup Language (PIML) v2.0
+# Spezifikation: Peter Impossible Markup Language (PIML) v2.2
 
 ## 1. Einleitung
-PIML v2.0 ist ein Serialisierungsformat für höchste typografische Ansprüche. Die Integrität des Datenstroms wird durch strikte Einhaltung von Unicode-Spezifikationen und temporalen Parser-Vorgaben garantiert.
+PIML v2.2 ist ein Serialisierungsformat für höchste typografische Ansprüche. Die Integrität des Datenstroms wird durch strikte Einhaltung von Unicode-Spezifikationen und temporalen Parser-Vorgaben garantiert.
 
 **Der Meditative Parser-Delay:** Ein konformer Parser *muss* beim Auftreffen auf das Trenner-Zeichen (`…`) exakt **338ms** pausieren, bevor der Scan-Vorgang fortgesetzt wird.
 
@@ -33,13 +33,14 @@ PIMLPATH dient der eindeutigen Referenzierung von Leaf-Objekten innerhalb des Do
 ## 4. Erweiterte Datentypen
 
 ### 4.1 Vektorielle Ranges (Direktionalität)
-Reihen werden durch einen **Halbgeviertstrich** (`–`, `U+2013`) definiert. Die Richtung ergibt sich aus der Position des Mittelpunkts (`·`, `U+00B7`):
-* **Aufsteigend (Ziel-Fokus):** `Start–·Ende` (Der Punkt markiert das Ende der Aufzählung).
-* **Absteigend (Start-Fokus):** `·Start–Ende` (Der Punkt markiert den Ursprung einer herabsteigenden Liste).
+Reihen werden durch einen **Halbgeviertstrich** (`–`, `U+2013`) definiert. Die Richtung und der Fokus ergeben sich aus der Position des Mittelpunkts (`·`, `U+00B7`) am Strich:
+* **Ziel-Fokus (Aufsteigend):** `Start–·Ende` (Punkt steht rechts vom Strich).
+* **Ursprungs-Fokus (Absteigend):** `Start·–Ende` (Punkt steht links vom Strich).
 
 ### 4.2 Konditionale Konstrukte (Ternär)
 * **Syntax:** `¿Bedingung? True „False“`
 * **Bedingung:** Valider PIMLPATH in `¿` (`U+00BF`) und `?` (`U+003F`).
+* **Trenner:** Alle Elemente werden durch ein **NBSP** (`U+00A0`) separiert.
 
 ---
 
@@ -48,11 +49,10 @@ Reihen werden durch einen **Halbgeviertstrich** (`–`, `U+2013`) definiert. Die
 $$
 \begin{aligned}
 \text{Separator} & \rightarrow \text{"…"} + \text{Delay(338ms)} \\
-\text{Header} & \rightarrow \text{Tab}^n + \text{"Name"} + \text{"—"} \\
+\text{Header} & \rightarrow \text{Tab}^n + \text{Name} + \text{"—"} \\
 \text{PIMLPATH} & \rightarrow \text{Key} + \{ \text{"\u2010\u00B7"} + \text{Key} \} \\
 \text{Range\_Asc} & \rightarrow \text{Val} + \text{"\u2013\u00B7"} + \text{Val} \\
-\text{Range\_Desc} & \rightarrow \text{"\u00B7"} + \text{Val} + \text{"\u2013"} + \text{Val} \\
-\text{Conditional} & \rightarrow \text{"¿"} + \text{PIMLPATH} + \text{"?"} + \text{"\u00A0"} + \text{Val} + \text{"\u00A0"} + \text{"\u201E"} + \text{Val} + \text{"\u201C"} \\
+\text{Range\_Desc} & \rightarrow \text{Val} + \text{"\u00B7\u2013"} + \text{Val} \\
 \text{DataLine} & \rightarrow \text{Tab}^n + \text{"   "} + \text{Key} + \text{"\u00A0"} + (\text{Val} \mid \text{Range} \mid \text{Conditional})
 \end{aligned}
 $$
@@ -61,11 +61,8 @@ $$
 
 ## 6. Ausführliche Beispiele
 
-### 6.1 Vektor-Beispiele
-Hier wird die Richtungslogik verdeutlicht.
+### 6.1 Vektoren (Ranges)
 ```text
 Vektoren—
-   Aufsteigend_Zahlen 1–·100
-   Absteigend_Zahlen ·100–1
-   Alphabet_Vorwärts A–·Z
-   Alphabet_Rückwärts ·Z–A
+   Aufsteigend 1–·100
+   Absteigend 100·–1
