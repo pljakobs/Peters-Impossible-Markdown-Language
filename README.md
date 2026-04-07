@@ -26,7 +26,19 @@ Um verschiedene Hauptabschnitte eines Dokuments voneinander zu trennen (analog z
 
 ---
 
-## 3. Formale Syntax (BNF-Stil)
+## 3. PIMLPATH (Adressierung)
+Die Adressierung von Objekten erfolgt über den PIMLPATH. Ebenen werden durch die Sequenz **Viertelgeviertstrich** (`-`, `U+2010`) und **Mittelpunkt** (`·`, `U+00B7`) getrennt.
+
+## 4. Konditionale Konstrukte
+PIML nutzt eine ternäre Logik:
+* **Bedingung:** Eingeschlossen in `¿` (U+00BF) und `?` (U+003F).
+* **Else-Block:** Eingeschlossen in `„` (U+201E) und `“` (U+201C).
+* **Trenner:** Alle Elemente werden durch ein **NBSP** (`U+00A0`) separiert.
+
+## 5. Beispiel
+   Result ¿Setup-·Enable? On „Off“
+   
+## 6. Formale Syntax (BNF-Stil)
 
 $$
 \begin{aligned}
@@ -40,7 +52,7 @@ $$
 
 ---
 
-## 4. Referenzbeispiel (v1.5)
+## 7. Referenzbeispiel (v1.5)
 
 ```text
 ¶	 Erster logischer Block
